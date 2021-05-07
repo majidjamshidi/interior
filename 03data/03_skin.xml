@@ -1,0 +1,1864 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<krpano version="1.19-pr16">
+
+    
+  <!-- Spot Style - Default Point Spot Style -->
+
+
+  <style name="IconDefaultPointSpotStyle"
+         url="%FIRSTXML%/spots/hotspot_neutral_user_defaultpoint0.png"
+         visible="false"
+         edge="center"
+         zoom="true"
+
+         onloaded="if(scene[get(xml.scene)].planar,if(zoom,set(zoom, false);););"
+         onhover="onhoverIconDefaultPointSpotStyle"
+         onout="onoutIconDefaultPointSpotStyle"
+
+
+         />
+  <action name="onhoverIconDefaultPointSpotStyle">
+    showtooltip('hotspot');
+  </action>
+  <action name="onoutIconDefaultPointSpotStyle">
+    hideTooltip();
+
+
+
+  </action>
+
+
+
+  <!-- unsupported kind of display : PointMap -->
+
+
+<!-- ********** -->
+<!-- D-pad Control Bar -->
+<!-- id : controlBar_dpad -->
+<!-- ********** -->
+
+<krpano controlBar_dpadbarbuilt="false" controlBar_dpadhorizontalwidth="0" controlBar_dpadverticalheight="0" controlBar_dpadIsOpened="false" />
+
+<events name="controlBar_dpadevents" 
+	onxmlcomplete="controlBar_dpadbuildMenuBar();" 
+
+
+	keep="true" />
+
+
+
+<action name="controlBar_dpadbuildMenuBar">
+	ifnot (controlBar_dpadbarbuilt, controlBar_dpadbuildMenu(); set(controlBar_dpadbarbuilt, true););
+</action>
+
+<action name="controlBar_dpadbuildMenu">
+	
+	
+	
+	set(controlBar_dpadbutton_pos, 10);
+
+
+
+
+		if (device.fullscreensupport,
+			set(layer[controlBar_dpadbtn_openfs].y, get(controlBar_dpadbutton_pos));
+			set(layer[controlBar_dpadbtn_closefs].y, get(controlBar_dpadbutton_pos));
+			inc(controlBar_dpadbutton_pos, 40);
+		);
+	
+		if (device.desktop,
+			set(layer[controlBar_dpadbtn_ctrlmode_drag_to].y, get(controlBar_dpadbutton_pos));
+			set(layer[controlBar_dpadbtn_ctrlmode_move_to].y, get(controlBar_dpadbutton_pos));
+			inc(controlBar_dpadbutton_pos, 40);
+		);
+	
+
+
+	
+		if (device.desktop,
+			set(layer[controlBar_dpadbtn_out].y, get(controlBar_dpadbutton_pos));
+			inc(controlBar_dpadbutton_pos, 40);
+				set(layer[controlBar_dpadzoom_slider_bg].y, get(controlBar_dpadbutton_pos));
+				inc(controlBar_dpadbutton_pos, 70);
+			set(layer[controlBar_dpadbtn_in].y, get(controlBar_dpadbutton_pos));
+			inc(controlBar_dpadbutton_pos, 40);
+		);
+	
+		set(layer[controlBar_dpadbtn_autorotate_on ].y, get(controlBar_dpadbutton_pos));
+		set(layer[controlBar_dpadbtn_autorotate_off].y, get(controlBar_dpadbutton_pos));
+		inc(controlBar_dpadbutton_pos, 40);
+	
+
+	
+
+	
+	if (controlBar_dpadbutton_pos != 10,
+		set(layer[controlBar_dpadmenu_vertical_bg].height, get(controlBar_dpadbutton_pos));
+		set(layer[controlBar_dpadmenu_vertical_bg_border].height, get(controlBar_dpadbutton_pos));
+		set(controlBar_dpadverticalheight, get(controlBar_dpadbutton_pos));
+
+
+	,
+		set(layer[controlBar_dpadmenu_vertical_bg].height, 0);
+		set(layer[controlBar_dpadmenu_vertical_bg_border].height, 0);
+
+
+	);
+	
+	
+	
+	set(controlBar_dpadbutton_pos, 10);
+	
+	
+		if (scene.count GT 1,
+			set(layer[controlBar_dpadbtn_prev_pano].x, get(controlBar_dpadbutton_pos));
+			inc(controlBar_dpadbutton_pos, 40);
+			
+			set(layer[controlBar_dpadbtn_next_pano].x, get(controlBar_dpadbutton_pos));
+			inc(controlBar_dpadbutton_pos, 40);
+		);
+	
+
+
+	
+	
+	
+
+		set(layer[controlBar_dpadbtn_display_floorplan].x, get(controlBar_dpadbutton_pos));
+		set(layer[controlBar_dpadbtn_hide_floorplan].x, get(controlBar_dpadbutton_pos));
+		inc(controlBar_dpadbutton_pos, 40);
+	
+	
+	
+
+	
+		if (device.desktop,
+			set(layer[controlBar_dpadbtn_display_help].x, get(controlBar_dpadbutton_pos));
+			set(layer[controlBar_dpadbtn_close_help].x, get(controlBar_dpadbutton_pos));
+			inc(controlBar_dpadbutton_pos, 40);
+		);
+	
+	if (controlBar_dpadbutton_pos != 10,
+		set(layer[controlBar_dpadmenu_horizontal_bg].width, get(controlBar_dpadbutton_pos));
+		set(layer[controlBar_dpadmenu_horizontal_bg_border].width, get(controlBar_dpadbutton_pos));
+		set(controlBar_dpadhorizontalwidth, get(controlBar_dpadbutton_pos));
+	,
+		set(layer[controlBar_dpadmenu_horizontal_bg].width, 0);
+	);
+	
+	
+	
+	
+</action>
+
+
+<events name="controlBar_dpadStartTourEvents" onTourStart="controlBar_dpadCallOnStartTour();" keep="true" />
+
+<action name="controlBar_dpadCallOnStartTour">
+	
+	controlBar_dpadshowMenuControls();
+</action>
+
+
+
+
+<style name="controlBar_dpadbtn_vertical_style"
+	keep="true"
+	align="bottom"
+	onhover="controlBar_dpadshowVerticalMenuTooltip();"
+	onout="hideTooltip();"
+	crop="0|0|30|30"
+	onovercrop="0|30|30|30"
+	ondowncrop="0|60|30|30"
+	x="0"
+	/>
+<style name="controlBar_dpadbtn_vertical_style_off"
+	keep="true"
+	align="bottom"
+	onhover="controlBar_dpadshowVerticalMenuTooltip();"
+	onout="hideTooltip();"
+	x="0"
+	/>
+<style name="controlBar_dpadbtn_vertical_style_alpha"
+	alpha="1.0"
+	devices="tablet.or.mobile"
+	/>
+<style name="controlBar_dpadbtn_vertical_style_alpha"
+	alpha="0.2"
+	devices="desktop"
+	/>
+
+<style name="controlBar_dpadmenu_bg_alpha"
+	alpha="0.2"
+	devices="desktop"
+	/>
+<style name="controlBar_dpadmenu_bg_alpha"
+	alpha="0.5"
+	devices="tablet.or.mobile"
+	/>
+
+<layer name="controlBar_dpadmenu_vertical_bg"
+	url="%FIRSTXML%/graphics/crosscornerbar/btn_bg_vertical.png"
+	keep="true"
+	align="bottomleft"
+	x="59"
+	y="113"
+	edge="bottom"
+	zorder="1"
+	scale9grid="12|10|3|40"
+	style="controlBar_dpadmenu_bg_alpha"
+	visible="false"
+	/>
+
+<layer name="controlBar_dpadmenu_vertical_bg_border"
+	url="%FIRSTXML%/graphics/crosscornerbar/btn_bg_border_vertical.png"
+	keep="true"
+	align="bottomleft"
+	x="59"
+	y="113"
+	edge="bottom"
+	zorder="2"
+	scale9grid="12|10|3|40"
+	onout="controlBar_dpadvertical_onout_action();"
+	onover="controlBar_dpadvertical_onover_action();"
+	visible="false"
+	>
+
+  <layer name="controlBar_dpadbtn_autorotate_on"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_start_autorotation.png"
+          onclick="resumeautorotation();
+"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          visible="false"
+          tooltip="controlBar_dpadautorotateOnTip"
+          />
+  <layer name="controlBar_dpadbtn_autorotate_off"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_stop_autorotation.png"
+          onclick="pauseautorotation();
+"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          visible="false"
+          tooltip="controlBar_dpadautorotateOffTip"
+          />
+
+
+
+  <layer name="controlBar_dpadbtn_in"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_zoom_in.png"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          ondown="viewControlZoomIn(false);"
+          onup="viewControlZoomStop();
+"
+          tooltip="controlBar_dpadzoomInTip"
+          visible="false"
+          devices="desktop"
+          />
+
+  <layer name="controlBar_dpadbtn_out"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_zoom_out.png"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          ondown="viewControlZoomOut(false);
+"
+          onup="viewControlZoomStop();
+"
+          tooltip="controlBar_dpadzoomOutTip"
+          visible="false"
+          devices="desktop"
+          />
+  <layer name="controlBar_dpadzoom_slider_bg"
+          url="%FIRSTXML%/graphics/crosscornerbar/slider_bg_vertical.png"
+          keep="true"
+          align="bottom"
+          alpha="0.2"
+          visible="false"
+          devices="desktop"
+          >
+    <layer name="controlBar_dpadzoom_slider_grip"
+           keep="true"
+           url="%FIRSTXML%/graphics/crosscornerbar/slider_grip_vertical.png"
+           align="top"
+           edge="center"
+           ondown="controlBar_dpadzoom_slider_grip_ondown();"
+           />
+  </layer>
+
+  <layer name="controlBar_dpadbtn_openfs"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_enter_fs.png"
+          onclick="enterFullscreen();
+"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          tooltip="controlBar_dpadopenFsTip"
+          visible="false"
+          devices="fullscreensupport"
+          />
+  <layer name="controlBar_dpadbtn_closefs"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_close_fs.png"
+          onclick="exitFullscreen();
+"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          visible="false"
+          tooltip="controlBar_dpadcloseFsTip"
+          devices="fullscreensupport"
+          />
+
+
+
+
+  <layer name="controlBar_dpadbtn_ctrlmode_move_to"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_move_to.png"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          tooltip="controlBar_dpadctrlmodeMoveTip"
+          onclick="setControlModeMoveTo();
+"
+          visible="false"
+          devices="desktop"
+          />
+  <layer name="controlBar_dpadbtn_ctrlmode_drag_to"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_drag_to.png"
+          style="controlBar_dpadbtn_vertical_style|controlBar_dpadbtn_vertical_style_alpha"
+          tooltip="controlBar_dpadctrlmodeDragTip"
+          onclick="setControlModeDragTo();
+"
+          visible="false"
+          devices="desktop"
+          />
+
+
+</layer>
+
+  <action name="controlBar_dpadvertical_onout_action">
+    set(layer[controlBar_dpadmenu_vertical_bg].alpha, 0.2);
+    if (device.fullscreensupport,
+      set(layer[controlBar_dpadbtn_openfs].alpha, 0.2);
+      set(layer[controlBar_dpadbtn_closefs].alpha, 0.2);
+    );
+    if (device.desktop,
+    set(layer[controlBar_dpadbtn_in].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_out].alpha, 0.2);
+    set(layer[controlBar_dpadzoom_slider_bg].alpha, 0.2);
+    );
+
+
+    set(layer[controlBar_dpadbtn_autorotate_off].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_autorotate_on ].alpha, 0.2);
+    if (device.desktop,
+      set(layer[controlBar_dpadbtn_ctrlmode_drag_to].alpha, 0.2);
+      set(layer[controlBar_dpadbtn_ctrlmode_move_to].alpha, 0.2);
+    );
+  </action>
+
+  <action name="controlBar_dpadvertical_onover_action">
+    set(layer[controlBar_dpadmenu_vertical_bg].alpha, 1);
+    if (device.fullscreensupport,
+      set(layer[controlBar_dpadbtn_openfs].alpha, 1);
+      set(layer[controlBar_dpadbtn_closefs].alpha, 1);
+    );
+    if (device.desktop,
+    set(layer[controlBar_dpadbtn_in].alpha, 1);
+    set(layer[controlBar_dpadbtn_out].alpha, 1);
+    set(layer[controlBar_dpadzoom_slider_bg].alpha, 1);
+    );
+
+
+    set(layer[controlBar_dpadbtn_autorotate_off].alpha, 1);
+    set(layer[controlBar_dpadbtn_autorotate_on ].alpha, 1);
+    if (device.desktop,
+      set(layer[controlBar_dpadbtn_ctrlmode_drag_to].alpha, 1);
+      set(layer[controlBar_dpadbtn_ctrlmode_move_to].alpha, 1);
+    );
+  </action>
+
+  <action name="controlBar_dpadhorizontal_onout_action">
+    set(layer[controlBar_dpadmenu_horizontal_bg].alpha, 0.2);
+
+
+    if (scene.count GT 1,
+    set(layer[controlBar_dpadbtn_prev_pano].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_next_pano].alpha, 0.2);
+    );
+
+
+
+    set(layer[controlBar_dpadbtn_display_floorplan].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_hide_floorplan].alpha, 0.2);
+
+    if (device.desktop,
+      set(layer[controlBar_dpadbtn_display_help].alpha, 0.2);
+      set(layer[controlBar_dpadbtn_close_help].alpha, 0.2);
+    ); 
+  </action>
+
+  <action name="controlBar_dpadhorizontal_onover_action">
+    set(layer[controlBar_dpadmenu_horizontal_bg].alpha, 1);
+
+
+    if (scene.count GT 1,
+    set(layer[controlBar_dpadbtn_prev_pano].alpha, 1);
+    set(layer[controlBar_dpadbtn_next_pano].alpha, 1);
+    );
+
+
+
+    set(layer[controlBar_dpadbtn_display_floorplan].alpha, 1);
+    set(layer[controlBar_dpadbtn_hide_floorplan].alpha, 1);
+
+    if (device.desktop,
+      set(layer[controlBar_dpadbtn_display_help].alpha, 1);
+      set(layer[controlBar_dpadbtn_close_help].alpha, 1);
+    );
+  </action>
+
+  <style name="controlBar_dpadbtn_horizontal_style"
+         keep="true"
+         align="left"
+         onhover="controlBar_dpadshowHorizontalMenuTooltip();"
+         onout="hideTooltip();"
+               crop="0| 0|30|30"
+         onovercrop="0|30|30|30"
+         ondowncrop="0|60|30|30"
+         y="0"
+         />
+<style name="controlBar_dpadbtn_horizontal_style_alpha"
+	alpha="1.0"
+	devices="tablet.or.mobile"
+	/>
+<style name="controlBar_dpadbtn_horizontal_style_alpha"
+	alpha="0.2"
+	devices="desktop"
+	/>
+
+  <layer name="controlBar_dpadmenu_horizontal_bg"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_bg_horizontal.png"
+          keep="true"
+          align="bottomleft"
+          x="113"
+          y="59"
+          edge="left"
+          zorder="1"
+          scale9grid="10|12|40|3"
+          style="controlBar_dpadmenu_bg_alpha"
+          visible="false"
+          />
+
+  <layer name="controlBar_dpadmenu_horizontal_bg_border"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_bg_border_horizontal.png"
+          keep="true"
+          align="bottomleft"
+          x="113"
+          y="59"
+          edge="left"
+          zorder="2"
+          scale9grid="10|12|40|3"
+          onout="controlBar_dpadhorizontal_onout_action();"
+          onover="controlBar_dpadhorizontal_onover_action();"
+          visible="false"
+          >
+    <layer name="controlBar_dpadbtn_prev_pano"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_previous_scene.png"
+            onclick="loadPreviousScene();
+"
+            style="controlBar_dpadbtn_horizontal_style|controlBar_dpadbtn_horizontal_style_alpha"
+            tooltip="controlBar_dpadprevSceneTip"
+            visible="false"
+            />
+    <layer name="controlBar_dpadbtn_next_pano"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_next_scene.png"
+            onclick="loadNextScene();
+"
+            style="controlBar_dpadbtn_horizontal_style|controlBar_dpadbtn_horizontal_style_alpha"
+            tooltip="controlBar_dpadnextSceneTip"
+            visible="false"
+            />
+
+
+
+  <layer name="controlBar_dpadbtn_display_floorplan"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_floorplan.png"
+          onclick="showFloorplan();
+"
+          style="controlBar_dpadbtn_horizontal_style|controlBar_dpadbtn_horizontal_style_alpha"
+          tooltip="controlBar_dpaddisplayFloorplanTip"
+          visible="false"
+          />
+  <layer name="controlBar_dpadbtn_hide_floorplan"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_floorplan.png"
+          onclick="hideFloorplan();
+"
+          style="controlBar_dpadbtn_horizontal_style|controlBar_dpadbtn_horizontal_style_alpha"
+          visible="false"
+          tooltip="controlBar_dpadhideFloorplanTip"
+           />
+
+
+    <layer name="controlBar_dpadbtn_display_help"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_help.png"
+            onclick="controlBar_dpaddisplayHelp();"
+            style="controlBar_dpadbtn_horizontal_style|controlBar_dpadbtn_horizontal_style_alpha"
+            tooltip="controlBar_dpaddisplayHelpTip"
+            devices="desktop"
+            visible="false"
+            />
+    <layer name="controlBar_dpadbtn_close_help"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_help.png"
+            onclick="controlBar_dpadcloseHelp();"
+            style="controlBar_dpadbtn_horizontal_style|controlBar_dpadbtn_horizontal_style_alpha"
+            tooltip="controlBar_dpadhideHelpTip"
+            devices="desktop"
+            visible="false"
+            />
+
+
+
+  </layer>
+
+
+	
+	<style name="controlBar_dpadbtn_navigation_style"
+		keep="true"
+		onhover="controlBar_dpadshowVerticalMenuTooltip();"
+		onout="hideTooltip();"
+		crop="0|0|30|30"
+		onovercrop="0|30|30|30"
+		ondowncrop="0|60|30|30"
+	/>
+	<style name="controlBar_dpadbtn_navigation_style_alpha"
+		alpha="1.0"
+		devices="tablet.or.mobile"
+	/>
+	<style name="controlBar_dpadbtn_navigation_style_alpha"
+		alpha="0.2"
+		devices="desktop"
+	/>
+	<style name="controlBar_dpadbtn_navigation_style_showctrl"
+		keep="true"
+		onout="hideTooltip();set(alpha, 0.5);"
+		onover="set(alpha, 1);"
+	/>
+	
+	<layer name="controlBar_dpadnavigation_bg"
+		url="%FIRSTXML%/graphics/crosscornerbar/btn_bg_move.png"
+		align="bottomleft"
+		x="5"
+		y="5"
+		keep="true"
+		capture="false"
+		zorder="1"
+		style="controlBar_dpadmenu_bg_alpha"
+		visible="false"
+		/>
+
+  <layer name="controlBar_dpadnavigation_bg_border"
+          url="%FIRSTXML%/graphics/crosscornerbar/btn_bg_border_move.png"
+          keep="true"
+          align="bottomleft"
+          x="5"
+          y="5"
+          capture="false"
+          zorder="2"
+          onout="controlBar_dpadnav_onout_action();"
+          onover="controlBar_dpadnav_onover_action();"
+          visible="false"
+          >
+    <layer name="controlBar_dpadbtn_left"
+            ondown="viewControlMoveLeft(false);
+"
+            onup="viewControlMoveHoriStop();
+"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_move_left.png"
+            style="controlBar_dpadbtn_navigation_style|controlBar_dpadbtn_navigation_style_alpha"
+            tooltip="controlBar_dpadmoveLeftTip"
+            x="5"
+            y="0"
+            edge="left"
+            align="left"
+            visible="false"
+             />
+    <layer name="controlBar_dpadbtn_right"
+            ondown="viewControlMoveRight(false);
+"
+            onup="viewControlMoveHoriStop();
+"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_move_right.png"
+            style="controlBar_dpadbtn_navigation_style|controlBar_dpadbtn_navigation_style_alpha"
+            tooltip="controlBar_dpadmoveRightTip"
+            x="5"
+            y="0"
+            edge="right"
+            align="right"
+            visible="false"
+             />
+    <layer name="controlBar_dpadbtn_up"
+            ondown="viewControlMoveUp(false);
+"
+            onup="viewControlMoveVertStop();
+"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_move_up.png"
+            style="controlBar_dpadbtn_navigation_style|controlBar_dpadbtn_navigation_style_alpha"
+            tooltip="controlBar_dpadmoveUpTip"
+            x="0"
+            y="5"
+            align="top"
+            edge="top"
+            visible="false"
+             />
+    <layer name="controlBar_dpadbtn_down"
+            ondown="viewControlMoveDown(false);
+"
+            onup="viewControlMoveVertStop();
+"
+            url="%FIRSTXML%/graphics/crosscornerbar/btn_move_down.png"
+            style="controlBar_dpadbtn_navigation_style|controlBar_dpadbtn_navigation_style_alpha"
+            tooltip="controlBar_dpadmoveDownTip"
+            x="0"
+            y="5"
+            edge="bottom"
+            align="bottom"
+            visible="false"
+             />
+
+	<layer name="controlBar_dpadbtn_hidecontrols"
+		url="%FIRSTXML%/graphics/crosscornerbar/btn_hide_controls.png"
+		style="controlBar_dpadbtn_navigation_style"
+		onclick="controlBar_dpadhideMenuControls();hideTourControls();
+"
+		edge="center"
+		align="center"
+		tooltip="controlBar_dpadhideControlsTip"
+		visible="false"
+		alpha="1.0"
+		/>
+	<layer name="controlBar_dpadbtn_showcontrols"
+		onclick="controlBar_dpadshowMenuControls();showTourControls();
+"
+		url="%FIRSTXML%/graphics/crosscornerbar/btn_show_controls.png"
+		style="controlBar_dpadbtn_navigation_style|controlBar_dpadbtn_navigation_style_showctrl"
+		align="center"
+		edge="center"
+		visible="false"
+		alpha="0.5"
+		tooltip="controlBar_dpaddisplayControlsTip"
+		/>
+	
+</layer>
+
+
+  <action name="controlBar_dpadnav_onout_action">
+    set(layer[controlBar_dpadnavigation_bg].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_left].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_right].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_up].alpha, 0.2);
+    set(layer[controlBar_dpadbtn_down].alpha, 0.2);
+  </action>
+
+  <action name="controlBar_dpadnav_onover_action">
+    set(layer[controlBar_dpadnavigation_bg].alpha, 1);
+    set(layer[controlBar_dpadbtn_left].alpha, 1);
+    set(layer[controlBar_dpadbtn_right].alpha, 1);
+    set(layer[controlBar_dpadbtn_up].alpha, 1);
+    set(layer[controlBar_dpadbtn_down].alpha, 1);
+  </action>
+
+
+
+	<events name="controlBar_dpadAutorotationEvents"
+		onstartautorotation="controlBar_dpadupdateAutorotationButtons();"
+		onresumeautorotation="controlBar_dpadupdateAutorotationButtons();"
+		onstopautorotation="controlBar_dpadupdateAutorotationButtons();"
+		onpauseautorotation="controlBar_dpadupdateAutorotationButtons();"
+		keep="true"/>
+	<action name="controlBar_dpadHideAutorotationButtons">
+		set(layer[controlBar_dpadbtn_autorotate_off].visible, false);
+		set(layer[controlBar_dpadbtn_autorotate_on].visible , false);
+	</action>
+	<action name="controlBar_dpadShowAutorotationButtons">
+		if(autorotate.enabled == false,
+			set(layer[controlBar_dpadbtn_autorotate_off].visible, false);
+			set(layer[controlBar_dpadbtn_autorotate_on].visible , true);
+		,
+			set(layer[controlBar_dpadbtn_autorotate_off].visible, true);
+			set(layer[controlBar_dpadbtn_autorotate_on].visible , false);
+		);
+	</action>
+	<action name="controlBar_dpadupdateAutorotationButtons">
+		if (controlBar_dpadIsOpened,
+			controlBar_dpadShowAutorotationButtons();
+		,
+			controlBar_dpadHideAutorotationButtons();
+		);
+	</action>
+
+
+
+	<events name="controlBar_dpadcontrolmodechangedevent" oncontrolmodechanged="if (controlBar_dpadControlModeButtonsActivated,controlBar_dpadupdateControlModeButtons(););" onxmlcomplete="set(controlBar_dpadControlModeButtonsActivated, true);" keep="true"/>
+	<action name="controlBar_dpadHideControlModeButtons">
+		set(layer[controlBar_dpadbtn_ctrlmode_move_to].visible, false);
+		set(layer[controlBar_dpadbtn_ctrlmode_drag_to].visible, false);
+	</action>
+	<action name="controlBar_dpadShowControlModeButtons">
+		if (tour_controlmodemousetype == "moveto",
+			set(layer[controlBar_dpadbtn_ctrlmode_drag_to].visible, true);
+			set(layer[controlBar_dpadbtn_ctrlmode_move_to].visible, false);
+		,
+			set(layer[controlBar_dpadbtn_ctrlmode_move_to].visible, true);
+			set(layer[controlBar_dpadbtn_ctrlmode_drag_to].visible, false);
+		);
+	</action>
+	<action name="controlBar_dpadupdateControlModeButtons">
+	if (device.desktop,
+		if (controlBar_dpadIsOpened,
+			controlBar_dpadShowControlModeButtons();
+		,
+			controlBar_dpadHideControlModeButtons();
+		);
+	,
+		controlBar_dpadHideControlModeButtons();
+	);
+	</action>
+	
+  <action name="controlBar_dpadzoom_slider_grip_dragging">
+    if (pressed,
+      sub(dy, mouse.stagey, drag_stagey); 
+      add(newy, drag_currenty, dy); 
+
+      if(newy LT 0, set(newy, 0) );
+      if(newy GT layer[controlBar_dpadzoom_slider_bg].pixelheight, copy(newy, layer[controlBar_dpadzoom_slider_bg].pixelheight));
+      copy(y, newy);
+
+      div(val, newy, layer[controlBar_dpadzoom_slider_bg].pixelheight);
+
+      sub(fovrange, view.fovmax, view.fovmin);
+      mul(newfov  , val, fovrange);
+      add(newfov  , view.fovmin);
+      set(view.fov, get(newfov));
+
+      delayedcall(0, controlBar_dpadzoom_slider_grip_dragging());
+    );
+  </action>
+  <action name="controlBar_dpadzoom_slider_grip_ondown">
+    copy(drag_currenty, y);
+    copy(drag_stagey, mouse.stagey);
+    controlBar_dpadzoom_slider_grip_dragging();
+  </action>
+  <events name="controlBar_dpadzoom_slider_events" keep="true" onviewchanged="controlBar_dpadzoom_slider_update();" />
+  <action name="controlBar_dpadzoom_slider_update">
+    if (device.desktop,
+    ifnot (layer[controlBar_dpadzoom_slider_grip].pressed,
+      sub(val, view.fov, view.fovmin);
+      sub(fovrange, view.fovmax, view.fovmin);
+      div(val, fovrange);
+      mul(newy, val, layer[controlBar_dpadzoom_slider_bg].pixelheight);
+      set(layer[controlBar_dpadzoom_slider_grip].y, get(newy));
+    );
+    );
+  </action>
+
+	<events name="controlBar_dpadmenufullscreenchangeevent"
+		onenterfullscreen="controlBar_dpadupdateFullscreenButtons();"
+		onexitfullscreen="controlBar_dpadupdateFullscreenButtons();"
+		keep="true"/>
+	<action name="controlBar_dpadHideFullscreenButtons">
+		set(layer[controlBar_dpadbtn_openfs].visible , false);
+		set(layer[controlBar_dpadbtn_closefs].visible, false);
+	</action>
+	<action name="controlBar_dpadShowFullscreenButtons">
+		if (device.fullscreensupport,
+			if(tour_fullscreen,
+				set(layer[controlBar_dpadbtn_openfs].visible , false);
+				set(layer[controlBar_dpadbtn_closefs].visible, true);
+			,
+				set(layer[controlBar_dpadbtn_openfs].visible ,true);
+				set(layer[controlBar_dpadbtn_closefs].visible,false);
+			);
+		,
+			controlBar_dpadHideFullscreenButtons();
+		);
+	</action>
+	<action name="controlBar_dpadupdateFullscreenButtons">
+		if (controlBar_dpadIsOpened,
+			controlBar_dpadShowFullscreenButtons();
+		,
+			controlBar_dpadHideFullscreenButtons();
+		);
+	</action>
+	
+
+
+
+
+<action name="controlBar_dpadhideMenuControls">
+		set(controlBar_dpadIsOpened, false);
+		set(layer[controlBar_dpadnavigation_bg].visible, false);
+		
+			set(layer[controlBar_dpadbtn_up].visible, false);
+			set(layer[controlBar_dpadbtn_down].visible, false);
+			set(layer[controlBar_dpadbtn_left].visible, false);
+			set(layer[controlBar_dpadbtn_right].visible, false);
+		
+		set(layer[controlBar_dpadnavigation_bg_border].visible, true);
+		tween(layer[controlBar_dpadnavigation_bg_border].alpha, 0.5, 1);
+		
+		
+		if(controlBar_dpadverticalheight GT 0,
+			set(layer[controlBar_dpadmenu_vertical_bg].visible, false);
+				set(layer[controlBar_dpadbtn_in].visible, false);
+				set(layer[controlBar_dpadbtn_out].visible, false);
+					set(layer[controlBar_dpadzoom_slider_bg].visible, false);
+
+
+				controlBar_dpadupdateAutorotationButtons();
+
+
+				controlBar_dpadupdateFullscreenButtons();
+				controlBar_dpadupdateControlModeButtons();
+			tween(layer[controlBar_dpadmenu_vertical_bg_border].alpha , 0, 1);
+			tween(layer[controlBar_dpadmenu_vertical_bg_border].height , 0, 1, easeOutQuad, set(layer[controlBar_dpadmenu_vertical_bg_border].visible, false));
+		);
+		
+		
+		if(controlBar_dpadhorizontalwidth != 0,
+			set(layer[controlBar_dpadmenu_horizontal_bg].visible, false);
+
+
+				if (scene.count GT 1,
+					set(layer[controlBar_dpadbtn_prev_pano].visible, false);
+					set(layer[controlBar_dpadbtn_next_pano].visible, false);
+				);
+
+				controlBar_dpadupdateFloorplanButtons();
+
+				controlBar_dpadupdateHelpButtons();
+
+
+			tween(layer[controlBar_dpadmenu_horizontal_bg_border].alpha , 0, 1);
+			tween(layer[controlBar_dpadmenu_horizontal_bg_border].width, 0, 1, easeOutQuad, set(layer[controlBar_dpadmenu_horizontal_bg_border].visible, false));
+		);
+		set(layer[controlBar_dpadbtn_showcontrols].visible, true);
+		set(layer[controlBar_dpadbtn_hidecontrols].visible, false);
+	</action>
+	
+	<action name="controlBar_dpadshowMenuControls">
+	set(controlBar_dpadIsOpened, true);
+    set(layer[controlBar_dpadbtn_showcontrols].visible, false);
+    set(layer[controlBar_dpadbtn_hidecontrols].visible, true);
+    set(layer[controlBar_dpadnavigation_bg].visible, true);
+
+    set(layer[controlBar_dpadbtn_up].visible, true);
+    set(layer[controlBar_dpadbtn_down].visible, true);
+    set(layer[controlBar_dpadbtn_left].visible, true);
+    set(layer[controlBar_dpadbtn_right].visible, true);
+
+    set(layer[controlBar_dpadnavigation_bg_border].visible, true);
+    tween(layer[controlBar_dpadnavigation_bg_border].alpha, 1, 1);
+
+    
+    if(controlBar_dpadverticalheight GT 0,
+      set(layer[controlBar_dpadmenu_vertical_bg_border].visible, true);
+      tween(layer[controlBar_dpadmenu_vertical_bg_border].alpha, 1, 1);
+      tween(layer[controlBar_dpadmenu_vertical_bg_border].height, get(controlBar_dpadverticalheight), 1, easeOutQuad,
+        set(layer[controlBar_dpadmenu_vertical_bg].visible, true);
+        controlBar_dpadupdateFullscreenButtons();
+        controlBar_dpadupdateAutorotationButtons();
+
+
+        if (device.desktop,
+        set(layer[controlBar_dpadbtn_in].visible, true);
+        set(layer[controlBar_dpadbtn_out].visible, true);
+        set(layer[controlBar_dpadzoom_slider_bg].visible, true);
+        );
+
+
+      );
+    );
+
+    
+    if(controlBar_dpadhorizontalwidth != 0,
+      set(layer[controlBar_dpadmenu_horizontal_bg_border].visible, true);
+      tween(layer[controlBar_dpadmenu_horizontal_bg_border].alpha, 1, 1);
+      tween(layer[controlBar_dpadmenu_horizontal_bg_border].width, get(controlBar_dpadhorizontalwidth), 1, easeOutQuad,
+        set(layer[controlBar_dpadmenu_horizontal_bg].visible, true);
+
+
+        if (scene.count GT 1,
+          set(layer[controlBar_dpadbtn_prev_pano].visible, true);
+          set(layer[controlBar_dpadbtn_next_pano].visible, true);
+        );
+        controlBar_dpadupdateControlModeButtons();
+
+
+
+        controlBar_dpadupdateFloorplanButtons();
+
+        controlBar_dpadupdateHelpButtons();
+
+
+      );
+    );
+  </action>
+
+  <layer name="controlBar_dpadhelpScreen"
+         url="%FIRSTXML%/graphics/crosscornerbar/help_screen_bg.png"
+         keep="true"
+         align="bottomleft"
+	     x="105"
+	     y="105"
+         zorder="97"
+         onclick="controlBar_dpadcloseHelp();"
+         visible="false"
+         width="prop"
+         height="10%"
+         alpha="0.0"
+         onout="set(alpha, 0.2);"
+         onover="stoptween(alpha);set(alpha, 1.0);"
+         />
+  <layer name="controlBar_dpadhelpScreenFg"
+         url="%FIRSTXML%/graphics/crosscornerbar/help_screen_fg.png"
+         width="prop"
+         height="10%"
+         x="105"
+	     y="105"
+         keep="true"
+         enabled="false"
+         capture="false"
+         align="bottomleft"
+         zorder="98"
+         onclick="controlBar_dpadcloseHelp();"
+         visible="false"
+         alpha="0.0"
+         displayed="false"
+         saveheight="0"
+         />
+
+  <action name="controlBar_dpaddisplayHelp">
+    if (device.desktop,
+    set(layer[controlBar_dpadhelpScreenFg].displayed, true);
+    set(layer[controlBar_dpadhelpScreenFg].visible, true);
+    set(layer[controlBar_dpadhelpScreen].visible, true);
+    tween(layer[controlBar_dpadhelpScreen].height, 50%, 1);
+    tween(layer[controlBar_dpadhelpScreenFg].height, 50%, 1);
+    tween(layer[controlBar_dpadhelpScreen].alpha, 0.2, 1);
+    tween(layer[controlBar_dpadhelpScreenFg].alpha, 1.0, 1);
+    controlBar_dpadupdateHelpButtons();
+    );
+  </action>
+  <action name="controlBar_dpadcloseHelp">
+    if (device.desktop,
+    set(layer[controlBar_dpadhelpScreenFg].displayed, false);
+    tween(layer[controlBar_dpadhelpScreen].alpha, 0.0, 1);
+    tween(layer[controlBar_dpadhelpScreenFg].alpha, 0.0, 1);
+    tween(layer[controlBar_dpadhelpScreen].height, 10%, 1, easeOutQuad,
+      set(layer[controlBar_dpadhelpScreen].visible, false);
+    );
+    tween(layer[controlBar_dpadhelpScreenFg].height, 10%, 1, easeOutQuad,
+      set(layer[controlBar_dpadhelpScreenFg].visible, false);
+    );
+    controlBar_dpadupdateHelpButtons();
+    );
+  </action>
+	<action name="controlBar_dpadHideHelpButtons">
+		set(layer[controlBar_dpadbtn_display_help].visible, false);
+		set(layer[controlBar_dpadbtn_close_help].visible, false);
+	</action>
+	<action name="controlBar_dpadShowHelpButtons">
+		if (layer[controlBar_dpadhelpScreenFg].displayed,
+			set(layer[controlBar_dpadbtn_close_help].visible, true);
+			set(layer[controlBar_dpadbtn_display_help].visible, false);
+		,
+			set(layer[controlBar_dpadbtn_display_help].visible, true);
+			set(layer[controlBar_dpadbtn_close_help].visible, false);
+		);
+	</action>
+	<action name="controlBar_dpadupdateHelpButtons">
+	if (device.desktop,
+		if (controlBar_dpadIsOpened,
+			controlBar_dpadShowHelpButtons();
+		,
+			controlBar_dpadHideHelpButtons();
+		);
+	,
+		controlBar_dpadHideHelpButtons();
+	);
+	</action>
+  
+
+
+  <action name="controlBar_dpadshowHorizontalMenuTooltip">
+    if (tooltip !== null, showTooltip('plugin', controlBar_dpadhorizMenuTooltipStyle, bottom););
+  </action>
+  <action name="controlBar_dpadshowVerticalMenuTooltip">
+    if (tooltip !== null, showTooltip('plugin', controlBar_dpadverticalMenuTooltipStyle, left););
+  </action>
+
+  <layer name="controlBar_dpadhorizMenuTooltipStyle"
+	keep="true"
+	enabled="false"
+	capture="false"
+	type="text"
+	align="center"
+	bg="true"
+	bgcolor="0x2e5f72"
+	bgalpha="0.90000762951094837"
+	bgborder="2.0 0xbafefd 1"
+	mergedalpha="false"
+	css="color:#bafefd;font-family:Times New Roman;font-weight:bold;font-size:14px;text-align:left;"
+	interactivecontent="false"
+	zorder="0"
+	padding="2"
+	xoffset="0"
+	visible="false"
+	html=""
+	edge="bottom"
+	yoffset="-10"
+  />
+  <layer name="controlBar_dpadverticalMenuTooltipStyle"
+	keep="true"
+	enabled="false"
+	capture="false"
+	type="text"
+	align="center"
+	bg="true"
+	bgcolor="0x2e5f72"
+	bgalpha="0.90000762951094837"
+	bgborder="2.0 0xbafefd 1"
+	mergedalpha="false"
+	css="color:#bafefd;font-family:Times New Roman;font-weight:bold;font-size:14px;text-align:left;"
+	interactivecontent="false"
+	zorder="0"
+	padding="2"
+	yoffset="0"
+	visible="false"
+	html=""
+	edge="left"
+	xoffset="10"
+  />
+
+
+
+	<events name="controlBar_dpadDisplayFloorPlanEvents" 
+		onshowtourfloorplan="controlBar_dpadupdateFloorplanButtons();" 
+		onhidetourfloorplan="controlBar_dpadupdateFloorplanButtons();" 
+		keep="true" />
+	<action name="controlBar_dpadHideFloorplanButtons">
+		set(layer[controlBar_dpadbtn_display_floorplan].visible, false);
+		set(layer[controlBar_dpadbtn_hide_floorplan].visible, false);
+	</action>
+	<action name="controlBar_dpadShowFloorplanButtons">
+		if (tour_displayfloorplan,
+			set(layer[controlBar_dpadbtn_hide_floorplan].visible, true);
+			set(layer[controlBar_dpadbtn_display_floorplan].visible, false);
+		,
+			set(layer[controlBar_dpadbtn_display_floorplan].visible, true);
+			set(layer[controlBar_dpadbtn_hide_floorplan].visible, false);
+		);
+	</action>
+	<action name="controlBar_dpadupdateFloorplanButtons">
+		if (controlBar_dpadIsOpened,
+			controlBar_dpadShowFloorplanButtons();
+		,
+			controlBar_dpadHideFloorplanButtons();
+		);
+	</action>
+
+
+
+
+<!-- ********** -->
+<!-- Floor plan -->
+<!-- id : floorPlan -->
+<!-- ********** -->
+
+	<ptplugin name="floorPlan" engine="KolorFloorPlan">
+		<settings>
+			<option name="background_color" value="f0f0f0" type="string" />
+			<option name="background_lighter_color" value="ffffff" type="string" />
+			<option name="background_darker_color" value="c8c8c8" type="string" />
+			<option name="background_alpha" value="0.59999999999999998" type="float" />
+			<option name="text_color" value="000000" type="string" />
+
+			<option name="resize" value="true" type="bool" />
+			<option name="fp_selector" value="multiple" type="string" />
+			<option name="fp_selector_label" value="floorPlanmenu_label" type="string" />
+			<option name="display_title" value="true" type="bool" />
+			<option name="title" value="panogroup28_floor_title" type="string" />
+			<option name="title_font" value="B Nazanin" type="string" />
+			<option name="title_size" value="14" type="int" />
+			<option name="title_weight" value="bold" type="string" />
+			<option name="title_decoration" value="normal" type="string" />
+			<option name="title_color" value="000000" type="string" />
+			<option name="display_orientation" value="false" type="bool" />
+			<option name="display_radar" value="true" type="bool" />
+			<option name="radar_radius" value="35" type="int" />
+			<option name="radar_line_width" value="1" type="int" />
+			<option name="radar_line_color" value="327473" type="string" />
+			<option name="radar_line_alpha" value="0.90000762951094837" type="float" />
+			<option name="radar_fill_color" value="90fffa" type="string" />
+			<option name="radar_fill_alpha" value="0.80000000000000004" type="float" />
+			<option name="selected_effect" value="bounce" type="string" />
+			<option name="close_on_click" value="false" type="bool" />
+			<option name="position" value="bottomleft" type="string" />
+			<option name="zorder" value="3" type="int" />
+			<option name="use_i18n" value="true" type="bool" />
+		</settings>
+		
+		<floorplanItems selectedItem="" selectedSpot="" selectedSpotScene="" selectedSpotHeading="" selectedSpotFov="">
+			
+			
+							<floorplanItem 
+								name="fpitempanogroup28" 
+								width="1178" 
+								height="788" 
+								groupName="panogroup28" 
+								url="floorplan/_003_panogroup28.png" 
+								title="panogroup28_floor_title"
+								heading="0">
+										<spot name="spotmap52" posX="0.793464005" posY="0.480468988" heading="78.39999999999975" desc="spotmap52_tooltip" descType="tooltip" groupName="" isScene="true" planar="false" scene="pano20" jsClick="spotmap52ActionSpotFloorPlan">
+											<icon url="spots/hotspot_neutral_user_defaultmap0.png" iconWidth="32" iconHeight="32" iconAnchor="center" />
+										</spot>
+										<spot name="spotmap53" posX="0.590849996" posY="0.666015983" heading="92.399999999999636" desc="spotmap53_tooltip" descType="tooltip" groupName="" isScene="true" planar="false" scene="pano22" jsClick="spotmap53ActionSpotFloorPlan">
+											<icon url="spots/hotspot_neutral_user_defaultmap0.png" iconWidth="32" iconHeight="32" iconAnchor="center" />
+										</spot>
+										<spot name="spotmap54" posX="0.431373" posY="0.433593988" heading="91.79999999999967" desc="spotmap54_tooltip" descType="tooltip" groupName="" isScene="true" planar="false" scene="pano21" jsClick="spotmap54ActionSpotFloorPlan">
+											<icon url="spots/hotspot_neutral_user_defaultmap0.png" iconWidth="32" iconHeight="32" iconAnchor="center" />
+										</spot>
+										<spot name="spotmap55" posX="0.575163007" posY="0.302733988" heading="96.799999999999955" desc="spotmap55_tooltip" descType="tooltip" groupName="" isScene="true" planar="false" scene="pano26" jsClick="spotmap55ActionSpotFloorPlan">
+											<icon url="spots/hotspot_neutral_user_defaultmap0.png" iconWidth="32" iconHeight="32" iconAnchor="center" />
+										</spot>
+										<spot name="spotmap56" posX="0.143791005" posY="0.224609002" heading="0" desc="spotmap56_tooltip" descType="tooltip" groupName="" isScene="true" planar="false" scene="pano24" jsClick="spotmap56ActionSpotFloorPlan">
+											<icon url="spots/hotspot_neutral_user_defaultmap0.png" iconWidth="32" iconHeight="32" iconAnchor="center" />
+										</spot>
+										<spot name="spotmap57" posX="0.274509996" posY="0.724609017" heading="-85.600000000000023" desc="spotmap57_tooltip" descType="tooltip" groupName="" isScene="true" planar="false" scene="pano25" jsClick="spotmap57ActionSpotFloorPlan">
+											<icon url="spots/hotspot_neutral_user_defaultmap0.png" iconWidth="32" iconHeight="32" iconAnchor="center" />
+										</spot>
+										<spot name="spotmap58" posX="0.271894991" posY="0.439453006" heading="-84.200000000000145" desc="spotmap58_tooltip" descType="tooltip" groupName="" isScene="true" planar="false" scene="pano27" jsClick="spotmap58ActionSpotFloorPlan">
+											<icon url="spots/hotspot_neutral_user_defaultmap0.png" iconWidth="32" iconHeight="32" iconAnchor="center" />
+										</spot>
+							</floorplanItem>
+		</floorplanItems>
+	</ptplugin>
+	
+	<action name="kolorFloorplanJsReady_floorPlan">
+		set(ptplugin[floorPlan].jsready, true);
+		
+		ifnot(ptplugin[floorPlan].floorplanItems.selectedSpot == "",
+			set(ptplugin[floorPlan].floorplanItems.selectedSpotFov, get(view.hfov));
+			js(invokePluginFunction(floorPlan, setKolorFloorPlanSelectedSpotOptions, get(xml.scene), get(view.hlookat), get(view.hfov)));
+		);
+	</action>
+	
+	
+	
+					<!-- floorplan panogroup28 spots counter : 7 -->
+						<action name="spotmap52ActionSpotFloorPlan">
+          mainloadscene(pano20);lookat(get(panoview.h), get(panoview.v), get(panoview.fov));
+
+</action>
+						<action name="spotmap53ActionSpotFloorPlan">
+          mainloadscene(pano22);lookat(get(panoview.h), get(panoview.v), get(panoview.fov));
+
+</action>
+						<action name="spotmap54ActionSpotFloorPlan">
+          mainloadscene(pano21);lookat(get(panoview.h), get(panoview.v), get(panoview.fov));
+
+</action>
+						<action name="spotmap55ActionSpotFloorPlan">
+          mainloadscene(pano26);lookat(get(panoview.h), get(panoview.v), get(panoview.fov));
+
+</action>
+						<action name="spotmap56ActionSpotFloorPlan">
+          mainloadscene(pano24);lookat(get(panoview.h), get(panoview.v), get(panoview.fov));
+
+</action>
+						<action name="spotmap57ActionSpotFloorPlan">
+          mainloadscene(pano25);lookat(get(panoview.h), get(panoview.v), get(panoview.fov));
+
+</action>
+						<action name="spotmap58ActionSpotFloorPlan">
+          mainloadscene(pano27);lookat(get(panoview.h), get(panoview.v), get(panoview.fov));
+
+</action>
+	
+	
+	<events name="floorPlanEvents" 
+	onxmlcomplete="ifnot(floorPlanFloorPlanLoaded,set(tour_displayfloorplan,true););floorPlanActivateDefaultSpot();" 
+	onviewchanged="floorPlanOnViewChange();" 
+	onhidetourfloorplan="floorPlanCloseTourFloorPlan();" 
+	onshowtourfloorplan="if(tour_displayfloorplan,floorPlanOpenTourFloorPlan(););" 
+	onTourStart="floorPlanOpenTourFloorPlan();"
+	changetourlanguage="floorPlanChangeLanguage();"
+	keep="true" />
+	
+	<action name="floorPlanChangeLanguage">
+		if(ptplugin[floorPlan].jsready,
+			stopdelayedcall(delay_floorPlan);
+			js(invokePluginFunction(floorPlanArea, changeLanguage, false, false));
+			js(invokePluginFunction(floorPlan, changeLanguage));
+		,
+			delayedcall(delay_floorPlan, 0.1, floorPlanChangeLanguage(););
+		);
+	</action>
+	
+	
+	<krpano floorPlanFloorPlanLoaded="false" />
+	
+	<action name="floorPlanHideTourFloorPlan">
+		hideKolorArea_floorPlanArea(true);
+	</action>
+	
+	<action name="floorPlanCloseTourFloorPlan">
+		closeKolorArea_floorPlanArea();
+	</action>
+	
+	<action name="floorPlanShowTourFloorPlan">
+		if(ptplugin[floorPlanArea].isOpen === null,
+			openKolorArea_floorPlanArea();
+		,
+			showKolorArea_floorPlanArea(true);
+		);
+	</action>
+	
+	<action name="floorPlanOpenTourFloorPlan">
+		openKolorArea_floorPlanArea();
+	</action>
+	
+	<action name="floorPlanOnViewChange">
+		if (floorPlanFloorPlanLoaded == true,
+			ifnot(ptplugin[floorPlan].floorplanItems.selectedSpot == "",
+				ifnot(scene[get(xml.scene)].planar,
+					js(invokePluginFunction(floorPlan, changeDirection, get(xml.scene), get(view.hlookat), get(view.hfov)));
+				);
+			);
+		);
+	</action>
+	
+	<action name="floorPlanActivateSpot">
+		
+		set(ptplugin[floorPlan].floorplanItems.selectedSpot, %1);
+		set(ptplugin[floorPlan].floorplanItems.selectedItem, %2);
+		
+		if(%1 !== "",
+			set(ptplugin[floorPlan].floorplanItems.selectedSpotScene, get(xml.scene));
+			set(ptplugin[floorPlan].floorplanItems.selectedSpotHeading, get(view.hlookat));
+			set(ptplugin[floorPlan].floorplanItems.selectedSpotFov, get(view.hfov));
+		);
+		
+		
+		if(ptplugin[floorPlanArea].isOpen,
+			floorPlanSelectActivatedSpot(%1, %2, %3);
+		);
+	</action>
+	
+	<action name="floorPlanSelectActivatedSpot">
+		js(invokePluginFunction(floorPlan, selectSpot, %1, %2, %3));
+
+		if(%1 !== "",
+			if(scene[get(xml.scene)].planar,
+				js(invokePluginFunction(floorPlan, hideRadar));
+			,
+				js(invokePluginFunction(floorPlan, changeDirection, get(xml.scene), get(view.hlookat), get(view.hfov)));
+			);
+		);
+	</action>
+	
+	<action name="floorPlanDeactivateSpot">
+		set(ptplugin[floorPlan].floorplanItems.selectedSpot, "");
+		
+		js(invokePluginFunction(floorPlan, unselectSpot));
+	</action>
+	
+	<action name="floorPlanActivateDefaultSpot">
+		set(floorPlanFloorPlanLoaded, true);
+		
+		set(floorPlanSpotFound, "");
+		set(floorPlanSpotScene, "");
+		set(floorPlanItemFound, "");
+		set(floorPlanItemSearch, true);
+		set(floorPlanSpotSearchActivated, true);
+		set(floorPlanSpotSearchContinue, true);
+		
+		
+		for(set(defaultfloorplaniteminc,0), defaultfloorplaniteminc LT ptplugin[floorPlan].floorplanItems.floorplanItem.count , inc(defaultfloorplaniteminc),
+                        if(floorPlanSpotSearchActivated == true,
+				
+				if(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].groupName == scene[get(xml.scene)].group,
+					set(floorPlanItemFound, get(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].name));
+					set(ptplugin[floorPlan].floorplanItems.selectedItem, get(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].name));
+					set(floorPlanItemSearch, false);
+				,
+					
+					if(floorPlanItemFound == "",
+						set(floorPlanItemFound, get(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].name));
+					);
+				);
+			);
+			if(floorPlanSpotSearchActivated == true,
+                                for(set(defaultspotinc,0), defaultspotinc LT ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].spot.count , inc(defaultspotinc),
+                                        if(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].spot[get(defaultspotinc)].isScene == true,
+					
+						if(floorPlanSpotSearchContinue == true,
+							if(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].spot[get(defaultspotinc)].scene == xml.scene,
+								set(floorPlanSpotFound, get(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].spot[get(defaultspotinc)].name));
+								set(floorPlanSpotScene, get(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].spot[get(defaultspotinc)].scene));
+								set(ptplugin[floorPlan].floorplanItems.selectedItem, get(ptplugin[floorPlan].floorplanItems.floorplanItem[get(defaultfloorplaniteminc)].name));
+								if(floorPlanItemSearch == false,
+									set(floorPlanSpotSearchContinue, false);
+									set(floorPlanSpotSearchActivated, false);
+								);
+							);
+						);
+					);
+					
+				);
+			);
+		);
+		
+		if(floorPlanSpotFound == "",
+			
+			
+			floorPlanDeactivateSpot();
+			
+			
+			set(ptplugin[floorPlan].floorplanItems.selectedItem, get(floorPlanItemFound));
+			
+			
+			ifnot(ptplugin[floorPlan].floorplanItems.selectedItem == "",
+				floorPlanActivateSpot("", get(ptplugin[floorPlan].floorplanItems.selectedItem), "");
+			);
+		,
+			
+			floorPlanActivateSpot(get(floorPlanSpotFound), get(ptplugin[floorPlan].floorplanItems.selectedItem), get(floorPlanSpotScene));
+		);
+	</action>
+	
+	<action name="floorPlanChangeTitle">
+		js(invokePluginFunction(floorPlan, changeTitle, %1));
+	</action>
+	
+	<ptplugin name="floorPlanArea" engine="kolorArea">
+	<settings>
+		<option name="position" value="bottomleft" type="string" />
+		<option name="start_position" value="bottom" type="string" />
+		<option name="margin_x" value="90" type="int" />
+		<option name="margin_y" value="90" type="int" />
+		<option name="display_title" value="true" type="bool" />
+		<option name="title" value="panogroup28_floor_title" type="string" />
+		<option name="title_font" value="B Nazanin" type="string" />
+		<option name="title_size" value="14" type="int" />
+		<option name="title_weight" value="bold" type="string" />
+		<option name="title_decoration" value="normal" type="string" />
+		<option name="title_color" value="000000" type="string" />
+		<option name="close_displayed" value="false" type="bool" />
+		<option name="close_text" value="floorPlandisplay_close_text" type="string" />
+
+		<option name="background_color" value="f0f0f0" type="string" />
+		<option name="background_alpha" value="0.59999999999999998" type="float" />
+		<option name="overlay_displayed" value="false" type="bool" />
+		<option name="overlay_color" value="000000" type="string" />
+		<option name="overlay_alpha" value="0.50000762951094835" type="float" />
+
+		<option name="padding" value="15" type="int" />
+		<option name="topleft_radius" value="15" type="int" />
+		<option name="topright_radius" value="15" type="int" />
+		<option name="bottomleft_radius" value="15" type="int" />
+		<option name="bottomright_radius" value="15" type="int" />
+		<option name="area_border_width" value="0" type="int" />
+		<option name="area_border_color" value="f2f2f2" type="string" />
+		<option name="area_border_alpha" value="1" type="float" />
+		<option name="area_width" value="250" type="int" />
+		<option name="area_height" value="250" type="int" />
+		<option name="area_width_unit" value="pixel" type="string" />
+		<option name="area_height_unit" value="pixel" type="string" />
+		<option name="animation" value="true" type="bool" />
+		<option name="animation_duration" value="500" type="int" />
+		<option name="close_on_click" value="false" type="bool" />
+		<option name="refresh_content" value="false" type="bool" />
+		<option name="open_callback" value="addKolorFloorPlan('floorPlan', 'floorPlanArea_floorplanDIV');" type="string" />
+		<option name="close_callback" value="invokeKrFunction('closeKolorAreaCallback_floorPlanArea')" type="string" />
+		<option name="zorder" value="3" type="int" />
+		<option name="use_i18n" value="true" type="bool" />
+	</settings>
+	</ptplugin>
+	
+	<action name="kolorAreaJsReady_floorPlanArea">
+		set(ptplugin[floorPlanArea].jsready, true);
+
+		inc(tour_autorotation_openatstartplugin);
+		set(ptplugin[floorPlanArea].autorotateBlocked, true);
+
+	</action>
+	
+	<action name="openKolorArea_floorPlanArea">
+		ifnot(ptplugin[floorPlanArea].isOpen,
+			set(ptplugin[floorPlanArea].isOpen, true);
+			pauseautorotation(forceplugin);
+
+			js(showKolorArea(floorPlanArea, &lt;div id="floorPlanArea_floorplanDIV"&gt;&lt;/div&gt;));
+			
+			if(ptplugin[floorPlan].floorplanItems.selectedSpot != "",
+				floorPlanSelectActivatedSpot(get(ptplugin[floorPlan].floorplanItems.selectedSpot), get(ptplugin[floorPlan].floorplanItems.selectedItem), get(ptplugin[floorPlan].floorplanItems.selectedSpotScene));
+			);
+			events.dispatch(onremovedisplayedobject);
+		);
+	</action>
+	
+	<action name="closeKolorArea_floorPlanArea">
+		if(ptplugin[floorPlanArea].isOpen,
+			js(invokePluginFunction(floorPlanArea, closeKolorArea));
+		);
+	</action>
+	
+	<action name="toggleKolorArea_floorPlanArea">
+		if(ptplugin[floorPlanArea].isOpen,
+			closeKolorArea_floorPlanArea();
+		,
+			openKolorArea_floorPlanArea();
+		);
+	</action>
+	
+	<action name="closeKolorAreaCallback_floorPlanArea">
+		if(ptplugin[floorPlanArea].isOpen,resumeautorotation(forceplugin);
+
+			if(ptplugin[floorPlanArea].autorotateBlocked,if(tour_autorotation_openatstartplugin GT 0,dec(tour_autorotation_openatstartplugin);set(ptplugin[floorPlanArea].autorotateBlocked,false);););
+		);
+		set(ptplugin[floorPlanArea].isOpen, false);hideFloorplan();
+
+	</action>
+	
+	<action name="changeTitleKolorArea_floorPlanArea">
+		js(invokePluginFunction(floorPlanArea, changeTitle, %1));
+	</action>
+	
+	<action name="showKolorArea_floorPlanArea">
+		set(ptplugin[floorPlanArea].isOpen, true);
+		pauseautorotation(forceplugin);
+
+		js(invokePluginFunction(floorPlanArea, showKolorArea, %1));
+		events.dispatch(onremovedisplayedobject);
+	</action>
+		
+	<action name="hideKolorArea_floorPlanArea">
+		resumeautorotation(forceplugin);
+
+		if(ptplugin[floorPlanArea].autorotateBlocked,if(tour_autorotation_openatstartplugin GT 0,dec(tour_autorotation_openatstartplugin);set(ptplugin[floorPlanArea].autorotateBlocked,false);););
+		set(ptplugin[floorPlanArea].isOpen, false);
+		js(invokePluginFunction(floorPlanArea, hideKolorArea, %1));
+	</action>
+	
+	<events name="kolorAreaEvents_floorPlanArea" 
+		keep="true"
+	/>
+	
+
+<!-- ********** -->
+<!-- Button -->
+<!-- id : button -->
+<!-- ********** -->
+
+  <layer name="button"
+         keep="true"
+         url="%FIRSTXML%/graphics/button/bottom01__2_.gif"
+         align="bottomleft"
+         x="290"
+         y="35"
+         zorder="4"
+         visible="false"
+         onclick="buttonOnClick"
+         tooltip="buttontooltip"
+         onhover="showTooltip('plugin');"
+         onout="hideTooltip();"
+         onover="set(layer[buttonover].visible, true);set(layer[button].visible, false);"
+         height="50"
+         width="50"
+         />
+
+
+<layer name="buttonover"
+         keep="true"
+         url="%FIRSTXML%/graphics/button/bottom01__1_.gif"
+         align="bottomleft"
+         x="290"
+         y="35"
+         zorder="4"
+         visible="false"
+         onclick="buttonOnClick"
+         tooltip="buttontooltip"
+         onhover="showTooltip('plugin');"
+         onout="hideTooltip();set(layer[button].visible, true);set(layer[buttonover].visible, false);"
+         onover=""
+         height="50"
+         width="50"
+         />
+
+
+  <action name="buttonOnClick">showGallery_gallery();
+
+
+  </action>
+
+  <events name="buttonevents"
+    onTourStart="showbutton();"
+    hidetourcontrols="hidebutton();"
+    showtourcontrols="showbutton();"
+    keep="true" />
+  <action name="hidebutton">set(layer[button].visible, false);</action>
+  <action name="showbutton">if(tour_displaycontrols,set(layer[button].visible, true);set(layer[buttonover].visible, false);,hidebutton(););</action>
+
+
+<!-- ********** -->
+<!-- Gallery -->
+<!-- id : gallery -->
+<!-- ********** -->
+
+<ptplugin name="gallery" engine="kolorBox">
+	<settings>
+		<option name="position" value="center" type="string" />
+		<option name="margin_x" value="0" type="int" />
+		<option name="margin_y" value="0" type="int" />
+		<option name="external_padding" value="15" type="int" />
+		<option name="draggable_box" value="false" type="bool" />
+		<option name="slideshow_autoplay" value="false" type="bool" />
+		<option name="slideshow" value="5000" type="int" />
+		<option name="container_auto_size" value="true" type="bool" />
+		<option name="container_width" value="100" type="int" />
+		<option name="container_width_unit" value="percent" type="string" />
+		<option name="container_height" value="100" type="int" />
+		<option name="container_height_unit" value="percent" type="string" />
+		<option name="container_color" value="ffffff" type="string" />
+		<option name="container_alpha" value="0.80000000000000004" type="float" />
+		<option name="container_topleft_border_radius" value="15" type="int" />
+		<option name="container_topright_border_radius" value="15" type="int" />
+		<option name="container_bottomleft_border_radius" value="15" type="int" />
+		<option name="container_bottomright_border_radius" value="15" type="int" />
+		<option name="container_border_width" value="0" type="int" />
+		<option name="container_border_color" value="ffffff" type="string" />
+		<option name="container_border_alpha" value="1" type="float" />
+		<option name="overlay_displayed" value="true" type="bool" />
+		<option name="overlay_color" value="000000" type="string" />
+		<option name="overlay_alpha" value="0.50000762951094835" type="float" />
+
+		<option name="item_border_width" value="0" type="int" />
+		<option name="item_border_color" value="ffffff" type="string" />
+		<option name="item_border_alpha" value="1" type="float" />
+		
+		<option name="title_displayed" value="true" type="bool" />
+		<option name="title_position" value="top" type="string" />
+		<option name="title_font" value="Verdana" type="string" />
+		<option name="title_size" value="14" type="int" />
+		<option name="title_weight" value="bold" type="string" />
+		<option name="title_style" value="normal" type="string" />
+		<option name="title_decoration" value="none" type="string" />
+		<option name="title_color" value="666666" type="string" />
+		
+		<option name="caption_displayed" value="false" type="bool" />
+		
+		<option name="play_displayed" value="true" type="bool" />
+		<option name="play_position" value="bottomleft" type="string" />
+		<option name="play_text" value="galleryplay_text" type="string" />
+
+
+
+
+		<option name="navigation_displayed" value="true" type="bool" />
+		<option name="navigation_position" value="bottom" type="string" />
+		<option name="counter_color" value="666666" type="string" />
+		<option name="navprev_text" value="gallerynavprev_text" type="string" />
+		<option name="navnext_text" value="gallerynavnext_text" type="string" />
+
+
+
+
+		<option name="navigation_arrows" value="true" type="bool" />
+
+
+
+
+		<option name="fullscreen_displayed" value="true" type="bool" />
+		<option name="fullscreen_position" value="topleft" type="string" />
+		<option name="fullscreen_text" value="galleryfullscreen_text" type="string" />
+
+
+
+
+		<option name="close_displayed" value="true" type="bool" />
+		<option name="close_position" value="topright" type="string" />
+		<option name="close_text" value="galleryclose_text" type="string" />
+
+		<option name="close_callback" value="invokeKrFunction('closeKolorBoxCallback_gallery')" type="string" />
+		<option name="zorder" value="5" type="int" />
+		<option name="use_i18n" value="true" type="bool" />
+	</settings>
+	<internaldata>
+		<item name="item_1" title="gallerypicture_title0" caption="gallerypicture_caption0" value="03data/graphics/gallery/_04.jpg"/>
+		<item name="item_2" title="gallerypicture_title1" caption="gallerypicture_caption1" value="03data/graphics/gallery/_05.jpg"/>
+		<item name="item_3" title="gallerypicture_title2" caption="gallerypicture_caption2" value="03data/graphics/gallery/_06.jpg"/>
+		<item name="item_4" title="gallerypicture_title3" caption="gallerypicture_caption3" value="03data/graphics/gallery/_07.jpg"/>
+		<item name="item_5" title="gallerypicture_title4" caption="gallerypicture_caption4" value="03data/graphics/gallery/_09.jpg"/>
+		<item name="item_6" title="gallerypicture_title5" caption="gallerypicture_caption5" value="03data/graphics/gallery/_10.jpg"/>
+		<item name="item_7" title="gallerypicture_title6" caption="gallerypicture_caption6" value="03data/graphics/gallery/_11.jpg"/>
+		<item name="item_8" title="gallerypicture_title7" caption="gallerypicture_caption7" value="03data/graphics/gallery/_14.jpg"/>
+		<item name="item_9" title="gallerypicture_title8" caption="gallerypicture_caption8" value="03data/graphics/gallery/_15.jpg"/>
+		<item name="item_10" title="gallerypicture_title9" caption="gallerypicture_caption9" value="03data/graphics/gallery/_19.jpg"/>
+		<item name="item_11" title="gallerypicture_title10" caption="gallerypicture_caption10" value="03data/graphics/gallery/_20.jpg"/>
+		<item name="item_12" title="gallerypicture_title11" caption="gallerypicture_caption11" value="03data/graphics/gallery/_18.jpg"/>
+		<item name="item_13" title="gallerypicture_title12" caption="gallerypicture_caption12" value="03data/graphics/gallery/_17.jpg"/>
+	</internaldata>
+</ptplugin>
+
+<action name="kolorBoxJsReady_gallery">
+	set(ptplugin[gallery].jsready, true);
+</action>
+
+<action name="showGallery_gallery">
+	ifnot(ptplugin[gallery].isOpen,
+		set(ptplugin[gallery].isOpen, true);
+		set(ptplugin[gallery].doNotDeleteMe, false);
+		set(gallery_boxurl, %1);
+		pauseautorotation(forceplugin);
+
+		js(invokePluginFunction(gallery, openKolorBox, %1));
+		events.dispatch(onremovedisplayedobject);
+	,
+		if(%1 !== null AND %1 != gallery_boxurl,
+			closeKolorBox_gallery();
+			delayedcall(0.3,showGallery_gallery(%1););
+		);
+	);
+</action>
+
+<action name="toggleGallery_gallery">
+	js(invokePluginFunction(gallery, toggleKolorBox, %1));
+</action>
+
+
+<action name="closeKolorBox_gallery">
+	js(invokePluginFunction(gallery, closeKolorBox));
+</action>
+
+<action name="closeKolorBoxCallback_gallery">
+	resumeautorotation(forceplugin);
+
+	set(ptplugin[gallery].isOpen, false);
+</action>
+
+<action name="changeLanguage_gallery">
+	if(ptplugin[gallery].jsready,
+		js(invokePluginFunction(gallery, changeLanguage));
+	,
+		delayedcall(delay_gallery, 0.1, changeLanguage_gallery(););
+	);
+</action>
+
+<events name="kolorBoxEvents_gallery" 
+	keep="true"
+	changetourlanguage="changeLanguage_gallery();"
+	/>
+
+<!-- ********** -->
+<!-- Logo -->
+<!-- id : logo -->
+<!-- ********** -->
+
+
+  <layer align="bottom"
+         x="0"
+         y="10"
+         zorder="6"
+         name="logo"
+         keep="true"
+         visible="false"
+         capture="false"
+
+			tooltip="logotooltipText"
+			onhover="showTooltip('plugin');"
+			onout="hideTooltip();"
+         url="%FIRSTXML%/graphics/logo/lo.png" 
+         onclick="
+getmessage(urltoopen,logowebsiteurl);openurl(get(urltoopen),_blank);
+"
+
+         height="200"
+         width="200"
+
+         />
+
+  <events name="logoevents" 
+    onTourStart="showlogo();"
+    keep="true" />
+
+  <action name="hidelogo">
+    set(layer[logo].visible, false);
+  </action>
+  <action name="showlogo">
+      set(layer[logo].visible, true);
+  </action>
+
+
+
+
+
+<action name="viewControlZoomIn">
+	if(%1,
+		if(%2,
+			if(%2 LT view.fovmin,
+				zoomto(get(view.fovmin));
+			,
+				if(%2 LT view.fov,
+					zoomto(%2);
+				);
+			);
+		,
+			set(fov_moveforce, -1);
+			delayedcall(0.1, viewControlZoomStop());
+		);
+	,
+		set(fov_moveforce, -1);
+	);
+</action>
+<action name="viewControlZoomOut">
+	if(%1,
+		if(%2,
+			if(%2 GT view.fovmax,
+				zoomto(get(view.fovmax));
+			,
+				if(%2 GT view.fov,
+					zoomto(%2);
+				);
+			);
+		,
+			set(fov_moveforce, +1);
+			delayedcall(0.1, viewControlZoomStop());
+		);
+	,
+		set(fov_moveforce, +1);
+	);
+</action>
+<action name="viewControlZoomStop">
+	set(fov_moveforce, 0);
+</action>
+
+<action name="viewControlMoveUp">
+	if(%1,
+		if(%2,
+			set(isfullvertical, false);
+			ifnot(scene[get(xml.scene)].planar,
+				sub(viewvfov, panoview.vmax, panoview.vmin);
+				if (viewvfov == 180,
+					set(isfullvertical, true);
+				);
+			);
+			if(isfullvertical == false AND calc(view.vlookat-%2) LT view.vlookatmin,
+				moveto(get(view.hlookat), get(view.vlookatmin));
+			,
+				moveto(get(view.hlookat), calc(view.vlookat-%2));
+			);
+		,
+			set(vlookat_moveforce, -1);
+			delayedcall(0.1, viewControlMoveVertStop());
+		);
+	,
+		set(vlookat_moveforce, -1);
+	);
+</action>
+<action name="viewControlMoveDown">
+	if(%1,
+		if(%2,
+			set(isfullvertical, false);
+			ifnot(scene[get(xml.scene)].planar,
+				sub(viewvfov, panoview.vmax, panoview.vmin);
+				if (viewvfov == 180,
+					set(isfullvertical, true);
+				);
+			);
+			if(sceneisfull360 == false AND calc(view.vlookat+%2) GT view.vlookatmax,
+				moveto(get(view.hlookat), get(view.vlookatmax));
+			,
+				moveto(get(view.hlookat), calc(view.vlookat+%2));
+			);
+		,
+			set(vlookat_moveforce, +1);
+			delayedcall(0.1, viewControlMoveVertStop());
+		);
+	,
+		set(vlookat_moveforce, +1);
+	);
+</action>
+<action name="viewControlMoveLeft">
+	if(%1,
+		if(%2,
+			set(isfullhorizontal, false);
+			ifnot(scene[get(xml.scene)].planar,
+				sub(viewhfov, panoview.hmax, panoview.hmin);
+				if (viewhfov == 360,
+					set(isfullhorizontal, true);
+				);
+			);
+			if(isfullhorizontal == false AND calc(view.hlookat-%2) LT view.hlookatmin,
+				moveto(get(view.hlookatmin), get(view.vlookat));
+			,
+				moveto(calc(view.hlookat-%2), get(view.vlookat));
+			);
+		,
+			set(hlookat_moveforce, -1);
+			delayedcall(0.1, viewControlMoveHoriStop());
+		);
+	,
+		set(hlookat_moveforce, -1);
+	);
+</action>
+<action name="viewControlMoveRight">
+	if(%1,
+		if(%2,
+			set(isfullhorizontal, false);
+			ifnot(scene[get(xml.scene)].planar,
+				sub(viewhfov, panoview.hmax, panoview.hmin);
+				if (viewhfov == 360,
+					set(isfullhorizontal, true);
+				);
+			);
+			if(isfullhorizontal == false AND calc(view.hlookat+%2) GT view.hlookatmax,
+				moveto(get(view.hlookatmax), get(view.vlookat));
+			,
+				moveto(calc(view.hlookat+%2), get(view.vlookat));
+			);
+		,
+			set(hlookat_moveforce, +1);
+			delayedcall(0.1, viewControlMoveHoriStop());
+			
+		);
+	,
+		set(hlookat_moveforce, +1);
+	);
+</action>
+<action name="viewControlMoveHoriStop">
+	set(hlookat_moveforce, 0);
+</action>
+<action name="viewControlMoveVertStop">
+	set(vlookat_moveforce, 0);
+</action>
+
+  <!-- Fullscreen Management -->
+  <action name="exitFullScreen" devices="fullscreensupport">set(tour_fullscreen,false);js(setFullscreen(false));</action>
+  <action name="enterFullScreen" devices="fullscreensupport">set(tour_fullscreen,true);js(setFullscreen(true));</action>
+  <action name="switchFullScreen">if(tour_fullscreen,exitFullScreen();,enterFullScreen(););</action>
+
+  
+  <events name="krpanoExitFullscreenEvent"
+    onexitfullscreen="if(tour_fullscreen,exitFullScreenChangeEvent(););"
+    keep="true" />
+
+  <action name="exitFullScreenChangeEvent" devices="fullscreensupport">set(tour_fullscreen,false);events.dispatch(onexitfullscreen);</action>
+  <action name="enterFullScreenChangeEvent" devices="fullscreensupport">set(tour_fullscreen,true);events.dispatch(onenterfullscreen);</action>
+  <action name="exitFullScreenFallback">set(fullscreen,false);</action>
+  <action name="enterFullScreenFallback">set(fullscreen,true);</action>
+  
+  <action name="resizeFullScreenEvent">delayedcall(0,updatescreen(););</action>
+
+  <!-- FLOORPLAN -->
+  <action name="hideFloorplan">set(tour_displayfloorplan, false);events.dispatch(onhidetourfloorplan);</action>
+  <action name="showFloorplan">set(tour_displayfloorplan, true); events.dispatch(onshowtourfloorplan);</action>
+
+
+  <!-- Hide / Show Controls -->
+  <action name="hideTourControls">set(tour_displaycontrols, false);events.dispatch(hidetourcontrols);</action>
+  <action name="showTourControls">set(tour_displaycontrols, true); events.dispatch(showtourcontrols);</action>
+
+
+</krpano>
